@@ -17,14 +17,19 @@ namespace mtg_lifecounter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Background background;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 480;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 480;
             graphics.IsFullScreen = true;
+
+            graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
+            graphics.ApplyChanges();
 
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
@@ -35,7 +40,7 @@ namespace mtg_lifecounter
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            background = new Background();
 
             base.Initialize();
         }
@@ -45,7 +50,7 @@ namespace mtg_lifecounter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            background.LoadContent(this.Content);
         }
         
         protected override void Update(GameTime gameTime)
@@ -63,7 +68,11 @@ namespace mtg_lifecounter
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            background.Draw(this.spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

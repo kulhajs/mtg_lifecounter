@@ -11,3 +11,5 @@ mtg_lifecounter/mtg_lifecounter/obj/Windows Phone/Debug/ContentPipeline-{C742D43
 mtg_lifecounter/mtg_lifecounter/obj/
 *.txt
 *.user
+*.db
+*.cachefile
