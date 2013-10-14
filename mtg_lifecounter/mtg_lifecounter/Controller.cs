@@ -31,6 +31,12 @@ namespace mtg_lifecounter
             //heal buttons
             buttons.Add(new Button(ButtonType.Heal, Id.One, new Vector2(360, 280)));
             buttons.Add(new Button(ButtonType.Heal, Id.Two, new Vector2(440, 280)));
+            //add poison buttons
+            buttons.Add(new Button(ButtonType.AddPoison, Id.One, new Vector2(360, 40)));
+            buttons.Add(new Button(ButtonType.AddPoison, Id.Two, new Vector2(440, 40)));
+            //remove poison buttons
+            buttons.Add(new Button(ButtonType.RemovePoison, Id.One, new Vector2(40, 40)));
+            buttons.Add(new Button(ButtonType.RemovePoison, Id.Two, new Vector2(760, 40)));
             //dice buttons
             buttons.Add(new Button(ButtonType.Dice, Id.One, new Vector2(360, 440)));
             buttons.Add(new Button(ButtonType.Dice, Id.Two, new Vector2(440, 440)));

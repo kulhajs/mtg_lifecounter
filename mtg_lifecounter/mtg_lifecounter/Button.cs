@@ -24,7 +24,7 @@ namespace mtg_lifecounter
 
         public Id Id { get; private set; }
 
-        public Rectangle ButtonRectangle { get { return new Rectangle((int)X, (int)Y, texture.Width, texture.Height); } }
+        public Rectangle ButtonRectangle { get { return new Rectangle((int)X - texture.Width / 2, (int)Y - texture.Height / 2, texture.Width, texture.Height); } }
 
         public Button(ButtonType buttonType, Id id, Vector2 position)
         {
@@ -42,15 +42,26 @@ namespace mtg_lifecounter
 
             if (ButtonType == mtg_lifecounter.ButtonType.Hurt) { texture = contentManager.Load<Texture2D>("images/hurt" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Heal) { texture = contentManager.Load<Texture2D>("images/heal" + suffix); return; }
-            if (ButtonType == mtg_lifecounter.ButtonType.AddPoison) { texture = contentManager.Load<Texture2D>("images/addPoison" + suffix); return; }
-            if (ButtonType == mtg_lifecounter.ButtonType.RemovePoison) { texture = contentManager.Load<Texture2D>("iamges/removePoison" + suffix); return; }
+            if (ButtonType == mtg_lifecounter.ButtonType.AddPoison) { texture = contentManager.Load<Texture2D>("images/heal"); return; }
+            if (ButtonType == mtg_lifecounter.ButtonType.RemovePoison) { texture = contentManager.Load<Texture2D>("images/hurt"); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Dice) { texture = contentManager.Load<Texture2D>("images/dice" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Reset) { texture = contentManager.Load<Texture2D>("images/restart" + suffix); return; }
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
-            theSpriteBatch.Draw(texture, this.Position, null, Color.White, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+            if(ButtonType == mtg_lifecounter.ButtonType.AddPoison)
+            {
+                theSpriteBatch.Draw(texture, this.Position, null, Color.Lime, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+            }
+            else if(ButtonType == mtg_lifecounter.ButtonType.RemovePoison)
+            {
+                theSpriteBatch.Draw(texture, this.Position, null, Color.DarkGreen, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                theSpriteBatch.Draw(texture, this.Position, null, Color.White, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);   
+            }
         }
     }
 }

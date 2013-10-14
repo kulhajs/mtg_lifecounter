@@ -20,6 +20,8 @@ namespace mtg_lifecounter
 
         Vector2 rotationOrigin = new Vector2(200, 280);
 
+        PoisonCounter poisonCounter;
+
         const int initialHp = 20;
 
         const int minimumHp = 0;
@@ -28,30 +30,33 @@ namespace mtg_lifecounter
 
         const int maximumPoison = 10;
 
-        public bool DeadEh { get { return this.Hitpoints <= minimumHp || this.PoisonCounters >= maximumPoison; } }
+        public bool DeadEh { get { return this.Hitpoints <= minimumHp || this.poisonCounter.Count >= maximumPoison; } }
 
         public int Hitpoints { get; set; }
 
-        public int PoisonCounters { get; set; }
 
         public Id Id { get; set; }
 
         public Player(Id id)
         {
             this.Id = id;
-            this.PoisonCounters = initialPoison;
+            poisonCounter = new PoisonCounter(Id);
+            this.poisonCounter.Count = initialPoison;
             this.Hitpoints = initialHp;
+
         }
 
         public void LoadContent(ContentManager theContentManager)
         {
             contentManager = theContentManager;
             font = contentManager.Load<SpriteFont>("fonts/segoe");
+            poisonCounter.LoadContent(contentManager);
         }
 
         public void Hurt()
         {
-            this.Hitpoints -= 1;
+            if (this.Hitpoints > 0)
+                this.Hitpoints -= 1;
         }
 
         public void Heal()
@@ -61,17 +66,23 @@ namespace mtg_lifecounter
 
         public void AddPoison()
         {
-            this.PoisonCounters += 1;
+            if (this.poisonCounter.Count < 10)
+            {
+                poisonCounter.Count += 1;
+            }
         }
 
         public void RemovePoison()
         {
-            this.PoisonCounters -= 1;
+            if(this.poisonCounter.Count > 0)
+            {
+                poisonCounter.Count -= 1;
+            }
         }
 
         public void Reset()
         {
-            this.PoisonCounters = initialPoison;
+            this.poisonCounter.Count = initialPoison;
             this.Hitpoints = initialHp;
         }
 
@@ -87,7 +98,7 @@ namespace mtg_lifecounter
                 theSpriteBatch.DrawString(
                     font, 
                     this.Hitpoints.ToString(), 
-                    new Vector2(70, 380),           //position
+                    this.Hitpoints >= 10 ? new Vector2(70, 380) : new Vector2(70, 420),           //position
                     Color.Black, FPI / 2,           //rotation
                     rotationOrigin,
                     this.Scale, 
@@ -99,13 +110,15 @@ namespace mtg_lifecounter
                 theSpriteBatch.DrawString(
                     font, 
                     this.Hitpoints.ToString(), 
-                    new Vector2(750, 180),          //position
+                    this.Hitpoints >= 10 ? new Vector2(750, 180) : new Vector2(750, 140),          //position
                     Color.White, 3 * FPI / 2,       //rotation
                     rotationOrigin, 
                     this.Scale, 
                     SpriteEffects.None, 
                     0f);
             }
+
+            poisonCounter.Draw(theSpriteBatch);
         }
     }
 }
