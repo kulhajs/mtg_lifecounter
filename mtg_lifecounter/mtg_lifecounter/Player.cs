@@ -34,6 +34,13 @@ namespace mtg_lifecounter
 
         public int Hitpoints { get; set; }
 
+        bool dice = false;
+
+        const float diceTime = 1.5f;
+
+        float elapsedDiceTime = 0.0f;
+
+        int diceValue;
 
         public Id Id { get; set; }
 
@@ -88,17 +95,35 @@ namespace mtg_lifecounter
 
         public void Dice()
         {
-            return;
+            if(!dice)
+            {
+                dice = true;
+                elapsedDiceTime = 0.0f;
+                Random random = new Random();
+                diceValue = random.Next(1,21);
+            }
         }
 
-        public void Draw(SpriteBatch theSpriteBatch)
+        public void Draw(SpriteBatch theSpriteBatch, GameTime gameTime)
         {
+            if(dice)
+            {
+                elapsedDiceTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if(elapsedDiceTime > diceTime)
+                {
+                    dice = false;
+                    diceValue = 0;
+                }
+            }
+
+            string text = dice == false ? this.Hitpoints.ToString() : diceValue.ToString();
+
             if(this.Id == mtg_lifecounter.Id.One)
             {
                 theSpriteBatch.DrawString(
                     font, 
-                    this.Hitpoints.ToString(), 
-                    this.Hitpoints >= 10 ? new Vector2(70, 380) : new Vector2(70, 420),           //position
+                    text,
+                    Convert.ToInt32(text) >= 10 ? new Vector2(70, 380) : new Vector2(70, 420),           //position
                     Color.Black, FPI / 2,           //rotation
                     rotationOrigin,
                     this.Scale, 
@@ -109,8 +134,8 @@ namespace mtg_lifecounter
             {
                 theSpriteBatch.DrawString(
                     font, 
-                    this.Hitpoints.ToString(), 
-                    this.Hitpoints >= 10 ? new Vector2(750, 180) : new Vector2(750, 140),          //position
+                    text,
+                    Convert.ToInt32(text) >= 10 ? new Vector2(750, 180) : new Vector2(750, 140),          //position
                     Color.White, 3 * FPI / 2,       //rotation
                     rotationOrigin, 
                     this.Scale, 

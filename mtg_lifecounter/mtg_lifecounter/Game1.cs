@@ -92,8 +92,8 @@ namespace mtg_lifecounter
             spriteBatch.Begin();
 
             background.Draw(this.spriteBatch);
-            playerOne.Draw(this.spriteBatch);
-            playerTwo.Draw(this.spriteBatch);
+            playerOne.Draw(this.spriteBatch, gameTime);
+            playerTwo.Draw(this.spriteBatch, gameTime);
 
             controller.Draw(this.spriteBatch);
 
