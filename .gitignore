@@ -6,3 +6,8 @@ mtg_lifecounter/mtg_lifecounter/Properties/
 *.csproj
 *.ico
 *.png
+mtg_lifecounter/mtg_lifecounter/bin/
+mtg_lifecounter/mtg_lifecounter/obj/Windows Phone/Debug/ContentPipeline-{C742D433-45DA-45FB-BEF6-0B2932988442}.xml
+mtg_lifecounter/mtg_lifecounter/obj/
+*.txt
+*.user
