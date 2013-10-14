@@ -69,6 +69,17 @@ namespace mtg_lifecounter
             this.PoisonCounters -= 1;
         }
 
+        public void Reset()
+        {
+            this.PoisonCounters = initialPoison;
+            this.Hitpoints = initialHp;
+        }
+
+        public void Dice()
+        {
+            return;
+        }
+
         public void Draw(SpriteBatch theSpriteBatch)
         {
             if(this.Id == mtg_lifecounter.Id.One)

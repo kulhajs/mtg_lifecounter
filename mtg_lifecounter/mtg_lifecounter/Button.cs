@@ -26,8 +26,6 @@ namespace mtg_lifecounter
 
         public Rectangle ButtonRectangle { get { return new Rectangle((int)X, (int)Y, texture.Width, texture.Height); } }
 
-        Texture2D texture;
-
         public Button(ButtonType buttonType, Id id, Vector2 position)
         {
             this.ButtonType = buttonType;
@@ -40,14 +38,14 @@ namespace mtg_lifecounter
         {
             contentManager = theContentManager;
 
-            string suffix = this.Id == mtg_lifecounter.Id.One ? "" : "_white";
+            string suffix = this.Id == mtg_lifecounter.Id.One ? "_white" : "";
 
             if (ButtonType == mtg_lifecounter.ButtonType.Hurt) { texture = contentManager.Load<Texture2D>("images/hurt" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Heal) { texture = contentManager.Load<Texture2D>("images/heal" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.AddPoison) { texture = contentManager.Load<Texture2D>("images/addPoison" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.RemovePoison) { texture = contentManager.Load<Texture2D>("iamges/removePoison" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Dice) { texture = contentManager.Load<Texture2D>("images/dice" + suffix); return; }
-            if (ButtonType == mtg_lifecounter.ButtonType.Reset) { texture = contentManager.Load<Texture2D>("images/reset" + suffix); return; }
+            if (ButtonType == mtg_lifecounter.ButtonType.Reset) { texture = contentManager.Load<Texture2D>("images/restart" + suffix); return; }
         }
 
         public void Draw(SpriteBatch theSpriteBatch)

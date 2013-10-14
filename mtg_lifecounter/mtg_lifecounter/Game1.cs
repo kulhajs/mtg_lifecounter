@@ -22,6 +22,10 @@ namespace mtg_lifecounter
         Player playerOne;
         Player playerTwo;
 
+        List<Player> players;
+
+        Controller controller;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,6 +51,13 @@ namespace mtg_lifecounter
             playerOne = new Player(Id.One);
             playerTwo = new Player(Id.Two);
 
+            players = new List<Player>();
+            players.Add(playerOne);
+            players.Add(playerTwo);
+
+            controller = new Controller();
+            controller.Initialize();
+
             base.Initialize();
         }
 
@@ -59,6 +70,8 @@ namespace mtg_lifecounter
 
             playerOne.LoadContent(this.Content);
             playerTwo.LoadContent(this.Content);
+
+            controller.LoadContent(this.Content);
         }
         
         protected override void Update(GameTime gameTime)
@@ -67,7 +80,7 @@ namespace mtg_lifecounter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            controller.Update(players); 
 
             base.Update(gameTime);
         }
@@ -81,6 +94,8 @@ namespace mtg_lifecounter
             background.Draw(this.spriteBatch);
             playerOne.Draw(this.spriteBatch);
             playerTwo.Draw(this.spriteBatch);
+
+            controller.Draw(this.spriteBatch);
 
             spriteBatch.End();
 
