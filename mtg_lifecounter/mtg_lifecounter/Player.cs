@@ -12,7 +12,7 @@ namespace mtg_lifecounter
     {
         One,
         Two
-    }
+    };
 
     class Player : Sprite
     {
