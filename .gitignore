@@ -1,0 +1,8 @@
+*.sln
+*.suo
+mtg_lifecounter/mtg_lifecounter/Properties/
+*.contentproj
+*.cache
+*.csproj
+*.ico
+*.png
