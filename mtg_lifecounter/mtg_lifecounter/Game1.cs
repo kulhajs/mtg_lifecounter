@@ -19,6 +19,9 @@ namespace mtg_lifecounter
 
         Background background;
 
+        Player playerOne;
+        Player playerTwo;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,6 +44,8 @@ namespace mtg_lifecounter
         protected override void Initialize()
         {
             background = new Background();
+            playerOne = new Player(Id.One);
+            playerTwo = new Player(Id.Two);
 
             base.Initialize();
         }
@@ -51,6 +56,9 @@ namespace mtg_lifecounter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             background.LoadContent(this.Content);
+
+            playerOne.LoadContent(this.Content);
+            playerTwo.LoadContent(this.Content);
         }
         
         protected override void Update(GameTime gameTime)
@@ -71,6 +79,8 @@ namespace mtg_lifecounter
             spriteBatch.Begin();
 
             background.Draw(this.spriteBatch);
+            playerOne.Draw(this.spriteBatch);
+            playerTwo.Draw(this.spriteBatch);
 
             spriteBatch.End();
 

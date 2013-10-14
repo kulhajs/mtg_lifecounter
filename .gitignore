@@ -13,3 +13,4 @@ mtg_lifecounter/mtg_lifecounter/obj/
 *.user
 *.db
 *.cachefile
+*.spritefont
