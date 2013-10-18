@@ -14,3 +14,5 @@ mtg_lifecounter/mtg_lifecounter/obj/
 *.db
 *.cachefile
 *.spritefont
+mtg_lifecounter/mtg_lifecounter/PerfLogs/
+*.sap

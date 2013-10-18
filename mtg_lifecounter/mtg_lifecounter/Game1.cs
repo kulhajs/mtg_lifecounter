@@ -94,35 +94,20 @@ namespace mtg_lifecounter
 
             controller.Update(players);
 
-            if (playerOne.DeadEh && !playerOne.ScoreSaved)
+            if(players.Where(player => player.DeadEh && !player.ScoreSaved).ToList().Count > 0)
             {
-                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = 1 });
-                playerOne.ScoreSaved = true;
+                Player deadPlayer = players.Where(player => player.DeadEh).Single();
+                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = (int)deadPlayer.Id });
+                deadPlayer.ScoreSaved = true;
                 scoreDb.SubmitChanges();
 
                 List<Score> allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList();
-                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == 1).ToList();
+                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == (int)deadPlayer.Id).ToList();
 
-                playerOne.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
-                playerTwo.PercentGamesWon = 100 - playerOne.PercentGamesWon;
+                deadPlayer.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
+                players.Where(player => player.Id != deadPlayer.Id).Single().PercentGamesWon = 100 - deadPlayer.PercentGamesWon;
 
-                playerOne.ShowPercentage = true;
-                playerTwo.ShowPercentage = true;
-            }
-            else if (playerTwo.DeadEh && !playerTwo.ScoreSaved)
-            {
-                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = 2 });
-                playerTwo.ScoreSaved = true;
-                scoreDb.SubmitChanges();
-
-                List<Score> allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList();
-                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == 2).ToList();
-
-                playerTwo.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
-                playerOne.PercentGamesWon = 100 - playerTwo.PercentGamesWon;
-
-                playerOne.ShowPercentage = true;
-                playerTwo.ShowPercentage = true;
+                players.All(player => player.ShowPercentage = true);
             }
 
             base.Update(gameTime);
