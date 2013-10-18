@@ -96,10 +96,10 @@ namespace mtg_lifecounter
                 deadPlayer.ScoreSaved = true;
                 scoreDb.SubmitChanges();
 
-                List<Score> allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList();
-                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == (int)deadPlayer.Id).ToList();
+                int allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList().Count;
+                int scores = scoreDb.ScoreTable.Where(score => score.WinnerId == (int)deadPlayer.Id).ToList().Count;
 
-                deadPlayer.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
+                deadPlayer.PercentGamesWon = (int)(((float)scores / (float)allScores) * 100);
                 players.Where(player => player.Id != deadPlayer.Id).Single().PercentGamesWon = 100 - deadPlayer.PercentGamesWon;
 
                 players.All(player => player.ShowPercentage = true);
