@@ -57,6 +57,8 @@ namespace mtg_lifecounter
                     HandleTouch(new Rectangle((int)touchPosition.X - 16, (int)touchPosition.Y - 16, 32, 32), players);
                 }
             }
+
+
         }
 
         public void HandleTouch(Rectangle touchRectangle, List<Player> players)

@@ -26,6 +26,8 @@ namespace mtg_lifecounter
 
         Controller controller;
 
+        public static ScoreDataContext scoreDb;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,6 +45,16 @@ namespace mtg_lifecounter
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+            using(ScoreDataContext db = new ScoreDataContext(ScoreDataContext.DBCoonnectionString))
+            {
+                if(db.DatabaseExists() == false)
+                {
+                    db.CreateDatabase();
+                }
+            }
+
+            scoreDb = new ScoreDataContext(ScoreDataContext.DBCoonnectionString);
         }
 
         protected override void Initialize()
@@ -73,14 +85,45 @@ namespace mtg_lifecounter
 
             controller.LoadContent(this.Content);
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            controller.Update(players); 
+            controller.Update(players);
+
+            if (playerOne.DeadEh && !playerOne.ScoreSaved)
+            {
+                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = 1 });
+                playerOne.ScoreSaved = true;
+                scoreDb.SubmitChanges();
+
+                List<Score> allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList();
+                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == 1).ToList();
+
+                playerOne.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
+                playerTwo.PercentGamesWon = 100 - playerOne.PercentGamesWon;
+
+                playerOne.ShowPercentage = true;
+                playerTwo.ShowPercentage = true;
+            }
+            else if (playerTwo.DeadEh && !playerTwo.ScoreSaved)
+            {
+                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = 2 });
+                playerTwo.ScoreSaved = true;
+                scoreDb.SubmitChanges();
+
+                List<Score> allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList();
+                List<Score> scores = scoreDb.ScoreTable.Where(score => score.WinnerId == 2).ToList();
+
+                playerTwo.PercentGamesWon = (int)(((float)scores.Count / (float)allScores.Count) * 100);
+                playerOne.PercentGamesWon = 100 - playerTwo.PercentGamesWon;
+
+                playerOne.ShowPercentage = true;
+                playerTwo.ShowPercentage = true;
+            }
 
             base.Update(gameTime);
         }

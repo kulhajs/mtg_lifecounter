@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
 
 namespace mtg_lifecounter
 {
@@ -32,7 +35,13 @@ namespace mtg_lifecounter
 
         public bool DeadEh { get { return this.Hitpoints <= minimumHp || this.poisonCounter.Count >= maximumPoison; } }
 
+        public bool ShowPercentage { get; set; }
+
+        public bool ScoreSaved { get; set; }
+
         public int Hitpoints { get; set; }
+
+        public int PercentGamesWon { get; set; }
 
         bool dice = false;
 
@@ -50,6 +59,7 @@ namespace mtg_lifecounter
             poisonCounter = new PoisonCounter(Id);
             this.poisonCounter.Count = initialPoison;
             this.Hitpoints = initialHp;
+            this.ScoreSaved = false;
 
         }
 
@@ -81,7 +91,7 @@ namespace mtg_lifecounter
 
         public void RemovePoison()
         {
-            if(this.poisonCounter.Count > 0)
+            if (this.poisonCounter.Count > 0)
             {
                 poisonCounter.Count -= 1;
             }
@@ -91,58 +101,68 @@ namespace mtg_lifecounter
         {
             this.poisonCounter.Count = initialPoison;
             this.Hitpoints = initialHp;
+            this.ScoreSaved = false;
+            this.ShowPercentage = false;
         }
 
         public void Dice()
         {
-            if(!dice)
+            if (!dice)
             {
                 dice = true;
                 elapsedDiceTime = 0.0f;
                 Random random = new Random();
-                diceValue = random.Next(1,21);
+                diceValue = random.Next(1, 21);
             }
         }
 
         public void Draw(SpriteBatch theSpriteBatch, GameTime gameTime)
         {
-            if(dice)
+            if (dice)
             {
                 elapsedDiceTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(elapsedDiceTime > diceTime)
+                if (elapsedDiceTime > diceTime)
                 {
                     dice = false;
                     diceValue = 0;
                 }
             }
 
-            string text = dice == false ? this.Hitpoints.ToString() : diceValue.ToString();
+            string text;
 
-            if(this.Id == mtg_lifecounter.Id.One)
+            if(!ShowPercentage)
+            {
+                text = dice == false ? this.Hitpoints.ToString() : diceValue.ToString();   
+            }
+            else
+            {
+                text = PercentGamesWon.ToString();
+            }
+
+            if (this.Id == Id.One)
             {
                 theSpriteBatch.DrawString(
-                    font, 
-                    text,
-                    Convert.ToInt32(text) >= 10 ? new Vector2(70, 380) : new Vector2(70, 420),           //position
+                    font,
+                    ShowPercentage == false ? text : text + "%",
+                    ShowPercentage == false ? new Vector2(70, 460 - text.Length * 40) : new Vector2(70, 390 - text.Length * 40),           //position
                     Color.Black, FPI / 2,           //rotation
                     rotationOrigin,
-                    this.Scale, 
-                    SpriteEffects.None, 
+                    this.Scale,
+                    SpriteEffects.None,
                     0f);
             }
             else
             {
                 theSpriteBatch.DrawString(
-                    font, 
-                    text,
-                    Convert.ToInt32(text) >= 10 ? new Vector2(750, 180) : new Vector2(750, 140),          //position
+                    font,
+                    ShowPercentage == false ? text : text + "%",
+                    ShowPercentage == false ? new Vector2(750, 100 + text.Length * 40) : new Vector2(750, 180 + text.Length * 40),          //position
                     Color.White, 3 * FPI / 2,       //rotation
-                    rotationOrigin, 
-                    this.Scale, 
-                    SpriteEffects.None, 
+                    rotationOrigin,
+                    this.Scale,
+                    SpriteEffects.None,
                     0f);
             }
-
             poisonCounter.Draw(theSpriteBatch);
         }
     }

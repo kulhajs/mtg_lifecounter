@@ -31,7 +31,7 @@ namespace mtg_lifecounter
         {
             for(int i = 0; i < maxCount; i++)
             {
-                theSpriteBatch.Draw(texture, Id == mtg_lifecounter.Id.One ? new Vector2(81 + i * 24, 20) : new Vector2(700 - i * 24, 20), i < Count ? Color.Lime : Color.DarkGreen);
+                theSpriteBatch.Draw(texture, Id == Id.One ? new Vector2(81 + i * 24, 20) : new Vector2(700 - i * 24, 20), i < Count ? Color.Lime : Color.DarkGreen);
             }
         }
     }
