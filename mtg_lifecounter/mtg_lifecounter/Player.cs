@@ -8,7 +8,8 @@ namespace mtg_lifecounter
     enum Id
     {
         One = 1,
-        Two = 2
+        Two = 2,
+        None = 3
     };
 
     class Player : Sprite

@@ -102,7 +102,7 @@ namespace mtg_lifecounter
                 deadPlayer.PercentGamesWon = (int)(((float)scores / (float)allScores) * 100);
                 players.Where(player => player.Id != deadPlayer.Id).Single().PercentGamesWon = 100 - deadPlayer.PercentGamesWon;
 
-                players.All(player => player.ShowPercentage = true);
+                //players.All(player => player.ShowPercentage = true);
             }
 
             base.Update(gameTime);
@@ -115,10 +115,11 @@ namespace mtg_lifecounter
             spriteBatch.Begin();
 
             background.Draw(this.spriteBatch);
-            playerOne.Draw(this.spriteBatch, gameTime);
-            playerTwo.Draw(this.spriteBatch, gameTime);
 
             controller.Draw(this.spriteBatch);
+
+            playerOne.Draw(this.spriteBatch, gameTime);
+            playerTwo.Draw(this.spriteBatch, gameTime);
 
             spriteBatch.End();
 

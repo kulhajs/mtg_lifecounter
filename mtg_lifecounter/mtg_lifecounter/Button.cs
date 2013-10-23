@@ -11,7 +11,8 @@ namespace mtg_lifecounter
         AddPoison,
         RemovePoison,
         Dice,
-        Reset
+        Reset,
+        Menu
     };
 
     class Button : Sprite
@@ -27,7 +28,10 @@ namespace mtg_lifecounter
             this.ButtonType = buttonType;
             this.Id = id;
             this.Position = position;
-            this.Rotation = Id == mtg_lifecounter.Id.One ? FPI / 2 : 3 * FPI / 2;
+            if (this.ButtonType != mtg_lifecounter.ButtonType.Menu)
+                this.Rotation = Id == mtg_lifecounter.Id.One ? FPI / 2 : 3 * FPI / 2;
+            else
+                this.Rotation = 0;
         }
 
         public void LoadContent(ContentManager theContentManager)
@@ -42,6 +46,7 @@ namespace mtg_lifecounter
             if (ButtonType == mtg_lifecounter.ButtonType.RemovePoison) { texture = contentManager.Load<Texture2D>("images/hurt"); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Dice) { texture = contentManager.Load<Texture2D>("images/20dice" + suffix); return; }
             if (ButtonType == mtg_lifecounter.ButtonType.Reset) { texture = contentManager.Load<Texture2D>("images/restart" + suffix); return; }
+            if (ButtonType == mtg_lifecounter.ButtonType.Menu) { texture = contentManager.Load<Texture2D>("images/menu"); return; }
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
