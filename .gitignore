@@ -16,3 +16,4 @@ mtg_lifecounter/mtg_lifecounter/obj/
 *.spritefont
 mtg_lifecounter/mtg_lifecounter/PerfLogs/
 *.sap
+*.htm

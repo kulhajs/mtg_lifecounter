@@ -1,3 +1,4 @@
+using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -42,6 +43,8 @@ namespace mtg_lifecounter
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+            PhoneApplicationService.Current.ApplicationIdleDetectionMode = IdleDetectionMode.Disabled;
 
             using(ScoreDataContext db = new ScoreDataContext(ScoreDataContext.DBCoonnectionString))
             {
