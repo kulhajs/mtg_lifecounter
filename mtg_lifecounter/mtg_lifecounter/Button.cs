@@ -49,19 +49,19 @@ namespace mtg_lifecounter
             if (ButtonType == mtg_lifecounter.ButtonType.Menu) { texture = contentManager.Load<Texture2D>("images/menu"); return; }
         }
 
-        public void Draw(SpriteBatch theSpriteBatch)
+        public void Draw(SpriteBatch theSpriteBatch, float boardY)
         {
             if(ButtonType == ButtonType.AddPoison)
             {
-                theSpriteBatch.Draw(texture, this.Position, null, Color.Lime, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+                theSpriteBatch.Draw(texture, new Vector2(this.X, boardY + this.Y), null, Color.Lime, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
             }
             else if(ButtonType == ButtonType.RemovePoison)
             {
-                theSpriteBatch.Draw(texture, this.Position, null, Color.DarkGreen, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+                theSpriteBatch.Draw(texture, new Vector2(this.X, boardY + this.Y), null, Color.DarkGreen, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
             }
             else
             {
-                theSpriteBatch.Draw(texture, this.Position, null, Color.White, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);   
+                theSpriteBatch.Draw(texture, new Vector2(this.X, boardY + this.Y), null, Color.White, this.Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);   
             }
         }
     }

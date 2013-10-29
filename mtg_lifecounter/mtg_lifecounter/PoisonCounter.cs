@@ -23,11 +23,11 @@ namespace mtg_lifecounter
             texture = contentManager.Load<Texture2D>("images/poisonStep");
         }
 
-        public void Draw(SpriteBatch theSpriteBatch)
+        public void Draw(SpriteBatch theSpriteBatch, float boardY)
         {
             for(int i = 0; i < maxCount; i++)
             {
-                theSpriteBatch.Draw(texture, Id == Id.One ? new Vector2(81 + i * 24, 20) : new Vector2(700 - i * 24, 20), i < Count ? Color.Lime : Color.DarkGreen);
+                theSpriteBatch.Draw(texture, Id == Id.One ? new Vector2(81 + i * 24, boardY + 20) : new Vector2(700 - i * 24, boardY + 20), i < Count ? Color.Lime : Color.DarkGreen);
             }
         }
     }

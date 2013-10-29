@@ -22,11 +22,11 @@ namespace mtg_lifecounter
             poisonBackground = contentManager.Load<Texture2D>("images/poisonBackground");
         }
 
-        public void Draw(SpriteBatch theSpriteBatch)
+        public void Draw(SpriteBatch theSpriteBatch, float boardY)
         {
-            theSpriteBatch.Draw(poisonBackground, new Vector2(0, 0), Color.Gray);
-            theSpriteBatch.Draw(playerBackground, new Vector2(0, 80), Color.White);
-            theSpriteBatch.Draw(playerBackground, new Vector2(400, 80), Color.Black);
+            theSpriteBatch.Draw(poisonBackground, new Vector2(0, boardY + 0), Color.Gray);
+            theSpriteBatch.Draw(playerBackground, new Vector2(0, boardY + 80), Color.White);
+            theSpriteBatch.Draw(playerBackground, new Vector2(400, boardY + 80), Color.Black);
         }
     }
 }

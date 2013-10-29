@@ -21,6 +21,8 @@ namespace mtg_lifecounter
 
         Controller controller;
 
+        Board board;
+
         public static ScoreDataContext scoreDb;
 
         public Game1()
@@ -54,6 +56,8 @@ namespace mtg_lifecounter
 
         protected override void Initialize()
         {
+            board = new Board();
+
             background = new Background();
             playerOne = new Player(Id.One);
             playerTwo = new Player(Id.Two);
@@ -65,6 +69,12 @@ namespace mtg_lifecounter
             controller = new Controller();
             controller.Initialize();
 
+            board.Background = background;
+            board.Controller = controller;
+            board.PlayerOne = playerOne;
+            board.PlayerTwo = playerTwo;
+            board.Players = players;
+
             base.Initialize();
         }
 
@@ -73,12 +83,14 @@ namespace mtg_lifecounter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background.LoadContent(this.Content);
+            board.LoadContent(this.Content);
 
-            playerOne.LoadContent(this.Content);
-            playerTwo.LoadContent(this.Content);
+            //background.LoadContent(this.Content);
 
-            controller.LoadContent(this.Content);
+            //playerOne.LoadContent(this.Content);
+            //playerTwo.LoadContent(this.Content);
+
+            //controller.LoadContent(this.Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -87,23 +99,7 @@ namespace mtg_lifecounter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            controller.Update(players);
-
-            if(players.Where(player => player.DeadEh && !player.ScoreSaved).ToList().Count > 0)
-            {
-                Player deadPlayer = players.Where(player => player.DeadEh).Single();
-                scoreDb.ScoreTable.InsertOnSubmit(new Score() { WinnerId = (int)deadPlayer.Id });
-                deadPlayer.ScoreSaved = true;
-                scoreDb.SubmitChanges();
-
-                int allScores = scoreDb.ScoreTable.Where(score => score.WinnerId != 0).ToList().Count;
-                int scores = scoreDb.ScoreTable.Where(score => score.WinnerId == (int)deadPlayer.Id).ToList().Count;
-
-                deadPlayer.PercentGamesWon = (int)(((float)scores / (float)allScores) * 100);
-                players.Where(player => player.Id != deadPlayer.Id).Single().PercentGamesWon = 100 - deadPlayer.PercentGamesWon;
-
-                //players.All(player => player.ShowPercentage = true);
-            }
+            board.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -114,12 +110,7 @@ namespace mtg_lifecounter
 
             spriteBatch.Begin();
 
-            background.Draw(this.spriteBatch);
-
-            controller.Draw(this.spriteBatch);
-
-            playerOne.Draw(this.spriteBatch, gameTime);
-            playerTwo.Draw(this.spriteBatch, gameTime);
+            board.Draw(this.spriteBatch, gameTime);
 
             spriteBatch.End();
 

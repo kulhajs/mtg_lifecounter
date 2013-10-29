@@ -111,7 +111,7 @@ namespace mtg_lifecounter
             }
         }
 
-        public void Draw(SpriteBatch theSpriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch theSpriteBatch, GameTime gameTime, float boardY)
         {
             if (dice)
             {
@@ -139,7 +139,7 @@ namespace mtg_lifecounter
                 theSpriteBatch.DrawString(
                     font,
                     ShowPercentage == false ? text : text + "%",
-                    ShowPercentage == false ? new Vector2(70, 460 - text.Length * 40) : new Vector2(70, 390 - text.Length * 40),           //position
+                    ShowPercentage == false ? new Vector2(70, boardY + 460 - text.Length * 40) : new Vector2(70, boardY + 390 - text.Length * 40),           //position
                     Color.Black, FPI / 2,           //rotation
                     rotationOrigin,
                     this.Scale,
@@ -151,14 +151,15 @@ namespace mtg_lifecounter
                 theSpriteBatch.DrawString(
                     font,
                     ShowPercentage == false ? text : text + "%",
-                    ShowPercentage == false ? new Vector2(750, 100 + text.Length * 40) : new Vector2(750, 180 + text.Length * 40),          //position
+                    ShowPercentage == false ? new Vector2(750, boardY + 100 + text.Length * 40) : new Vector2(750, boardY + 180 + text.Length * 40),          //position
                     Color.White, 3 * FPI / 2,       //rotation
                     rotationOrigin,
                     this.Scale,
                     SpriteEffects.None,
                     0f);
             }
-            poisonCounter.Draw(theSpriteBatch);
+
+            poisonCounter.Draw(theSpriteBatch, boardY);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace mtg_lifecounter
             buttons.Add(new Button(ButtonType.Menu, Id.None, new Vector2(400, 440)));
         }
 
-        public void Update(List<Player> players)
+        public void Update(List<Player> players, Board board)
         {
             touchCollection = TouchPanel.GetState();
             if (touchCollection.Count > 0)
@@ -54,14 +54,14 @@ namespace mtg_lifecounter
                 if(touchState == TouchLocationState.Pressed)
                 {
                     touchPosition = touchCollection[0].Position;
-                    HandleTouch(new Rectangle((int)touchPosition.X - 16, (int)touchPosition.Y - 16, 32, 32), players);
+                    HandleTouch(new Rectangle((int)touchPosition.X - 16, (int)touchPosition.Y - 16, 32, 32), players, board);
                 }
             }
 
 
         }
 
-        public void HandleTouch(Rectangle touchRectangle, List<Player> players)
+        public void HandleTouch(Rectangle touchRectangle, List<Player> players, Board board)
         {
             foreach(Button button in buttons)
             {
@@ -77,7 +77,8 @@ namespace mtg_lifecounter
                     if (button.ButtonType == ButtonType.Reset) { players.Where(player => player.Id == button.Id).Single().Reset(); return; }
                     if (button.ButtonType == ButtonType.Dice) { players.Where(player => player.Id == button.Id).Single().Dice(); return; }
 
-                    if (button.ButtonType == ButtonType.Menu) { players.All(player => player.ShowPercentage = true); return; }
+                    //if (button.ButtonType == ButtonType.Menu) { players.All(player => player.ShowPercentage = true); return; }
+                    if (button.ButtonType == ButtonType.Menu) { board.SlideOff = true; }
                 }
             }
         }
@@ -88,10 +89,10 @@ namespace mtg_lifecounter
                 button.LoadContent(theContentManager);
         }
 
-        public void Draw(SpriteBatch theSpritebatch)
+        public void Draw(SpriteBatch theSpritebatch, float boardY)
         {
             foreach (Button button in buttons)
-                button.Draw(theSpritebatch);
+                button.Draw(theSpritebatch, boardY);
         }
     }
 }
